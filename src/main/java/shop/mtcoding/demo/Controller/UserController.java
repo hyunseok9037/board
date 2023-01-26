@@ -20,6 +20,12 @@ public class UserController {
     @Autowired
     private HttpSession session;
 
+    @GetMapping("/logout")
+    public String logout() {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @GetMapping("/loginForm")
     public String loginForm() {
         return "user/loginForm";
@@ -40,7 +46,6 @@ public class UserController {
                 response.addCookie(cookie);
             } else {
                 Cookie cookie = new Cookie("remember", "");
-                cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
             session.setAttribute("principal", user);
