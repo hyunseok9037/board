@@ -1,6 +1,5 @@
 package shop.mtcoding.demo.Controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -32,26 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(String username, String password, String remember, HttpServletResponse response) {
+    public String login(String username, String password, HttpServletResponse response) {
         User user = userRepository.findByUsernameAndPassword(username, password);
         if (user == null) {
             return "redirect:/loginForm";
-        } else {
-            if (remember == null) {
-                remember = "";
-            }
-
-            if (remember.equals("on")) {
-                Cookie cookie = new Cookie("remember", username);
-                response.addCookie(cookie);
-            } else {
-                Cookie cookie = new Cookie("remember", "");
-                response.addCookie(cookie);
-            }
-            session.setAttribute("principal", user);
-            return "redirect:/";
         }
-
+        session.setAttribute("principal", user);
+        return "redirect:/";
     }
 
     @GetMapping("/joinForm")
